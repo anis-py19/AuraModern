@@ -1,0 +1,61 @@
+export const clinicData = {
+  name: "Aura Modern Dentistry",
+  arabicName: "عيادة زراعة و تجميل الأسنان",
+  tagline: "Advanced Dental Implants & Aesthetic Dentistry",
+  leadDoctor: {
+    name: "Dr. LABABOU.N",
+    title: "Lead Implantologist & Aesthetic Dental Surgeon",
+    qualification: "D.D.S., Specialist in Implantology & Oral Rehabilitation",
+    experience: "12+ Years Clinical Excellence",
+    phone: "0553.64.78.91",
+    whatsapp: "+213553647891",
+    email: "contact@auradentistry.com",
+    instagram: "@aura.modern.dentistry",
+    instagramUrl: "https://instagram.com/aura.modern.dentistry",
+    facebook: "aura.modern.dentistry",
+    facebookUrl: "https://facebook.com/aura.modern.dentistry",
+    bio: "Dr. LABABOU.N specializes in high-precision dental implants, complete aesthetic smile makeovers, and minimally invasive restorative dentistry using world-class protocols and advanced digital workflows.",
+  },
+  contact: {
+    phone: "0553.64.78.91",
+    phoneDisplay: "0553 64 78 91",
+    whatsapp: "+213553647891",
+    email: "contact@auradentistry.com",
+    address: "Aura Modern Dentistry Clinic, Algiers, Algeria",
+    city: "Algiers",
+    country: "Algeria",
+    hours: {
+      weekdays: "Saturday - Thursday : 8:30 AM - 7:00 PM",
+      friday: "Friday : Emergency by Appointment Only",
+      summary: "Sat - Thu: 8:30am - 7:00pm",
+    },
+  },
+  stats: [
+    { label: "Successful Smile Transformations", value: "3,500+" },
+    { label: "Dental Implants Placed", value: "1,200+" },
+    { label: "Patient Satisfaction", value: "99.4%" },
+    { label: "Years of Trust", value: "12+" },
+  ],
+  pillars: [
+    {
+      title: "State-of-the-Art Technology",
+      description: "Equipped with digital intraoral imaging, 3D diagnostics, and modern surgical units for painless treatments.",
+      icon: "technology",
+    },
+    {
+      title: "Certified Specialists",
+      description: "Led by Dr. LABABOU.N with specialized post-graduate credentials in aesthetic surgery and implantology.",
+      icon: "doctor",
+    },
+    {
+      title: "Pain-Free Procedures",
+      description: "Advanced gentle anesthesia and minimally invasive techniques tailored for total patient relaxation.",
+      icon: "shield",
+    },
+    {
+      title: "Transparent & Fair Pricing",
+      description: "Clear upfront quotes with flexible payment plans and zero hidden clinical fees.",
+      icon: "pricing",
+    },
+  ],
+};

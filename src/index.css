@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-serif: "Bodoni Moda", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  --color-aura-emerald-950: #061c16;
+  --color-aura-emerald-900: #0b2e24;
+  --color-aura-emerald-800: #104234;
+  --color-aura-emerald-700: #185c49;
+  --color-aura-emerald-600: #237b63;
+  --color-aura-emerald-500: #329c7f;
+  --color-aura-emerald-400: #4ec0a1;
+  --color-aura-emerald-100: #daf3eb;
+  --color-aura-emerald-50: #edfbf7;
+
+  --color-aura-gold-600: #b58d24;
+  --color-aura-gold-500: #d4af37;
+  --color-aura-gold-400: #e6c860;
+  --color-aura-gold-300: #f3dc8a;
+  --color-aura-gold-100: #fcf6dc;
+
+  --color-aura-slate-950: #080d11;
+  --color-aura-slate-900: #0f171e;
+  --color-aura-slate-800: #1a252f;
+  --color-aura-champagne: #f9f6f0;
+  --color-aura-ivory: #fcfdfa;
+}
+
+/* Smooth micro-interactions */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Custom Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-aura-ivory);
+  color: var(--color-aura-slate-900);
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  background-color: #080d12;
+  color: #f1f5f9;
+}
