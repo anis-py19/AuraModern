@@ -51,7 +51,7 @@ export default function Footer() {
             {/* Social Icons */}
             <div className="flex items-center gap-2.5 pt-2">
               <a
-                href={clinicData.contact.instagramUrl}
+                href={clinicData.leadDoctor.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors"
@@ -60,7 +60,7 @@ export default function Footer() {
                 <FaInstagram className="w-3.5 h-3.5" />
               </a>
               <a
-                href={clinicData.contact.facebookUrl}
+                href={clinicData.leadDoctor.facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors"

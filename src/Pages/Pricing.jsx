@@ -32,7 +32,7 @@ export default function Pricing() {
       </div>
 
       {/* Pricing Cards */}
-      <PricingSection _isFullPage />
+      <PricingSection />
 
       {/* Materials & Guarantee Standards */}
       <div className="py-16 bg-slate-100 dark:bg-[#070b10] border-y border-slate-200 dark:border-slate-800 transition-colors">

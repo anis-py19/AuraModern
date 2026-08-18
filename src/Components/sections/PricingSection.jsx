@@ -4,7 +4,7 @@ import SectionTitle from "../common/SectionTitle";
 import Button from "../common/Button";
 import { pricingPlans } from "../../data/pricingData";
 
-export default function PricingSection({ _isFullPage = false }) {
+export default function PricingSection() {
   return (
     <section id="pricing" className="py-20 lg:py-28 bg-white dark:bg-[#090e14] relative overflow-hidden transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

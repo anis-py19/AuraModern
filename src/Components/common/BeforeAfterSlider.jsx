@@ -53,6 +53,7 @@ export default function BeforeAfterSlider({
           alt={title ? `${title} After` : "After treatment"}
           className="absolute inset-0 w-full h-full object-cover"
           draggable={false}
+          loading="lazy"
         />
         <div className="absolute top-3 right-3 z-10 bg-emerald-950/85 backdrop-blur-sm text-emerald-300 text-[11px] font-semibold px-2.5 py-1 rounded-md border border-emerald-500/30 uppercase tracking-wider">
           After Treatment
@@ -68,6 +69,7 @@ export default function BeforeAfterSlider({
             alt={title ? `${title} Before` : "Before treatment"}
             className="absolute inset-0 w-full h-full object-cover"
             draggable={false}
+            loading="lazy"
           />
           <div className="absolute top-3 left-3 z-10 bg-slate-900/85 backdrop-blur-sm text-slate-200 text-[11px] font-semibold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
             Initial State

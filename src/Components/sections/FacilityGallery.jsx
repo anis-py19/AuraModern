@@ -4,7 +4,7 @@ import SectionTitle from "../common/SectionTitle";
 import Modal from "../common/Modal";
 import { facilityGallery } from "../../data/galleryData";
 
-export default function FacilityGallery({ _isFullPage = false }) {
+export default function FacilityGallery() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   return (
@@ -29,6 +29,7 @@ export default function FacilityGallery({ _isFullPage = false }) {
                 src={item.image}
                 alt={item.title}
                 className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                loading="lazy"
               />
 
               {/* Overlay Gradient */}
@@ -67,6 +68,7 @@ export default function FacilityGallery({ _isFullPage = false }) {
                 src={selectedPhoto.image}
                 alt={selectedPhoto.title}
                 className="w-full h-full object-contain mx-auto"
+                loading="lazy"
               />
             </div>
             <div className="pt-2">

@@ -253,7 +253,7 @@ export default function Navbar() {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden fixed inset-x-0 top-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-2xl px-6 py-6 max-h-[85vh] overflow-y-auto animate-fade-in">
+          <div className="lg:hidden fixed inset-0 top-[60px] bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-2xl px-6 py-6 overflow-y-auto animate-fade-in z-50">
             <div className="flex flex-col space-y-2">
               <Link
                 to="/"

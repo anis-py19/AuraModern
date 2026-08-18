@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <div className="flex flex-col min-h-screen bg-[#FCFDFB] dark:bg-[#080d12] text-slate-900 dark:text-slate-100 selection:bg-emerald-800 selection:text-amber-300 transition-colors duration-300">
+      <div className="flex flex-col min-h-screen transition-colors duration-300">
         <Topbar />
         <Navbar />
 
@@ -46,7 +46,7 @@ function App() {
 
         <Footer />
 
-        {/* Floating Quick WhatsApp Floating Trigger Button */}
+        {/* Floating WhatsApp Button */}
         <a
           href={`https://wa.me/${clinicData.contact.whatsapp.replace("+", "")}?text=Hello%20Aura%20Modern%20Dentistry,%20I%20would%20like%20to%20inquire%20about%20a%20dental%20appointment.`}
           target="_blank"

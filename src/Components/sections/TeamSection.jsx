@@ -30,6 +30,7 @@ export default function TeamSection() {
               src={clinicPhoto3}
               alt={doctor.name}
               className="w-full h-full object-cover object-center"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-slate-950" />
             

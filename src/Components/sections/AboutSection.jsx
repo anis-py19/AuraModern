@@ -99,6 +99,7 @@ export default function AboutSection() {
                   src={clinicPhoto4}
                   alt="Aura Clinic Reception Desk"
                   className="w-full h-72 sm:h-84 object-cover object-center"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 text-white">
@@ -117,6 +118,7 @@ export default function AboutSection() {
                   src={clinicPhoto3}
                   alt="Doctor Consultation Suite"
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
             </div>

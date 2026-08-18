@@ -1,7 +1,6 @@
 import React from "react";
 import { LuClock, LuPhone, LuMail } from "react-icons/lu";
 import { FaInstagram, FaFacebookF, FaWhatsapp } from "react-icons/fa";
-import ThemeToggle from "../common/ThemeToggle";
 import { clinicData } from "../../data/clinicData";
 
 export default function Topbar() {
@@ -35,8 +34,6 @@ export default function Topbar() {
             <LuMail className="w-3.5 h-3.5 text-emerald-400" />
             <span>{clinicData.contact.email}</span>
           </a>
-
-          <ThemeToggle compact />
 
           {/* Social Icons */}
           <div className="flex items-center gap-3 border-l border-slate-700 dark:border-slate-800 pl-4">

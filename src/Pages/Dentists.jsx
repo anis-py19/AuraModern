@@ -87,6 +87,7 @@ export default function Dentists() {
                 src={clinicPhoto2}
                 alt="Aura Operatory Suite"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 text-white">
