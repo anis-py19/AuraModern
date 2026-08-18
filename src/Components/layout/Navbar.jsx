@@ -6,15 +6,17 @@ import {
   LuX,
   LuChevronDown,
   LuCalendar,
-  LuSparkles,
   LuPhoneCall,
+  LuMapPin,
 } from "react-icons/lu";
-import { FaTooth } from "react-icons/fa";
+import { FaTooth, FaWhatsapp } from "react-icons/fa";
 import Button from "../common/Button";
 import Modal from "../common/Modal";
 import ThemeToggle from "../common/ThemeToggle";
-import { servicesData } from "../../data/servicesData";
-import { clinicData } from "../../data/clinicData";
+import LanguageSwitcher from "../common/LanguageSwitcher";
+import { getServicesData } from "../../data/servicesData";
+import { getClinicData } from "../../data/clinicData";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,14 +26,14 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
+  const { language, t } = useLanguage();
+
+  const clinic = getClinicData(language);
+  const services = getServicesData(language);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -44,15 +46,34 @@ export default function Navbar() {
     setPagesDropdown(false);
   }, [location.pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   const navLinkClass = ({ isActive }) =>
-    `relative text-sm font-medium transition-colors py-2 px-3 rounded-lg ${
+    `relative text-sm font-medium transition-colors py-1.5 px-2.5 rounded-md ${
       isActive
-        ? "text-emerald-800 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/60"
+        ? "text-emerald-800 dark:text-emerald-400 font-semibold bg-emerald-50/80 dark:bg-emerald-950/60"
         : "text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800/60"
     }`;
 
+  const mobileNavLinkClass = ({ isActive }) =>
+    `flex items-center justify-between py-3 px-4 rounded-xl text-sm font-semibold transition-colors ${
+      isActive
+        ? "bg-emerald-900 text-emerald-300 border border-emerald-700/60"
+        : "text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+    }`;
+
   const searchResults = searchQuery.trim()
-    ? servicesData.filter(
+    ? services.filter(
         (s) =>
           s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           s.shortDescription.toLowerCase().includes(searchQuery.toLowerCase())
@@ -62,29 +83,29 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 transition-all duration-300 ${
+        className={`sticky top-0 z-40 transition-all duration-200 ${
           isScrolled
-            ? "bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-md border-b border-slate-200/70 dark:border-slate-800/80 py-3"
-            : "bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800/60 py-4"
+            ? "bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm border-b border-slate-200/80 dark:border-slate-800 py-2.5"
+            : "bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 py-3"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-800 via-emerald-700 to-emerald-950 flex items-center justify-center text-amber-300 shadow-lg shadow-emerald-900/20 group-hover:scale-105 transition-transform duration-300">
-              <FaTooth className="w-5 h-5" />
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-900 dark:bg-emerald-950 text-amber-300 flex items-center justify-center border border-emerald-700/40 shrink-0">
+              <FaTooth className="w-4 h-4" />
             </div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white leading-none">
+              <div className="flex items-center gap-1.5">
+                <span className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white leading-none">
                   AURA
                 </span>
-                <span className="text-xs font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-200/60 dark:border-amber-500/30">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 bg-emerald-50/90 dark:bg-emerald-950/70 px-2 py-0.5 rounded-full border border-emerald-200/80 dark:border-emerald-700/40 shadow-xs">
                   Clinic
                 </span>
               </div>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wide mt-0.5">
-                {clinicData.arabicName}
+                {clinic.arabicName}
               </span>
             </div>
           </Link>
@@ -92,10 +113,10 @@ export default function Navbar() {
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             <NavLink to="/" className={navLinkClass}>
-              Home
+              {t("nav.home")}
             </NavLink>
             <NavLink to="/about" className={navLinkClass}>
-              About
+              {t("nav.about")}
             </NavLink>
 
             {/* Services Dropdown */}
@@ -105,37 +126,37 @@ export default function Navbar() {
               onMouseLeave={() => setServicesDropdown(false)}
             >
               <button
-                className={`flex items-center gap-1 text-sm font-medium py-2 px-3 rounded-lg transition-colors cursor-pointer ${
+                className={`flex items-center gap-1 text-sm font-medium py-1.5 px-2.5 rounded-md transition-colors cursor-pointer ${
                   location.pathname.startsWith("/services")
-                    ? "text-emerald-800 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/60"
+                    ? "text-emerald-800 dark:text-emerald-400 font-semibold bg-emerald-50/80 dark:bg-emerald-950/60"
                     : "text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800/60"
                 }`}
                 onClick={() => setServicesDropdown(!servicesDropdown)}
               >
-                <span>Services</span>
+                <span>{t("nav.services")}</span>
                 <LuChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     servicesDropdown ? "rotate-180 text-emerald-800 dark:text-emerald-400" : "text-slate-400"
                   }`}
                 />
               </button>
 
               {servicesDropdown && (
-                <div className="absolute top-full left-0 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 p-3 z-50 animate-fade-in">
+                <div className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-80 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 p-2.5 z-50 animate-fade-in text-left rtl:text-right">
                   <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-3 py-1.5 border-b border-slate-100 dark:border-slate-800 mb-1">
-                    Specialized Treatments
+                    {t("nav.specializedTreatments")}
                   </div>
-                  <div className="space-y-1">
-                    {servicesData.map((service) => (
+                  <div className="space-y-0.5">
+                    {services.map((service) => (
                       <Link
                         key={service.id}
                         to={`/services#${service.id}`}
-                        className="flex flex-col px-3 py-2 rounded-xl hover:bg-emerald-50/70 dark:hover:bg-slate-800/80 transition-colors group"
+                        className="flex flex-col px-3 py-2 rounded-lg hover:bg-emerald-50/70 dark:hover:bg-slate-800/80 transition-colors"
                       >
-                        <span className="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-emerald-800 dark:group-hover:text-emerald-400">
+                        <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 hover:text-emerald-800 dark:hover:text-emerald-400">
                           {service.title}
                         </span>
-                        <span className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
                           {service.shortDescription}
                         </span>
                       </Link>
@@ -146,8 +167,8 @@ export default function Navbar() {
                       to="/services"
                       className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-300 flex items-center gap-1"
                     >
-                      <span>Explore all dental services</span>
-                      <span>→</span>
+                      <span>{t("common.viewAllTreatments")}</span>
+                      <span className="rtl:rotate-180">→</span>
                     </Link>
                   </div>
                 </div>
@@ -155,11 +176,11 @@ export default function Navbar() {
             </div>
 
             <NavLink to="/gallery" className={navLinkClass}>
-              Cases & Results
+              {t("nav.gallery")}
             </NavLink>
 
             <NavLink to="/dentists" className={navLinkClass}>
-              Specialists
+              {t("nav.dentists")}
             </NavLink>
 
             {/* Pages Dropdown */}
@@ -169,199 +190,243 @@ export default function Navbar() {
               onMouseLeave={() => setPagesDropdown(false)}
             >
               <button
-                className={`flex items-center gap-1 text-sm font-medium py-2 px-3 rounded-lg transition-colors cursor-pointer ${
+                className={`flex items-center gap-1 text-sm font-medium py-1.5 px-2.5 rounded-md transition-colors cursor-pointer ${
                   ["/pricing", "/booking"].includes(location.pathname)
-                    ? "text-emerald-800 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/60"
+                    ? "text-emerald-800 dark:text-emerald-400 font-semibold bg-emerald-50/80 dark:bg-emerald-950/60"
                     : "text-slate-700 dark:text-slate-300 hover:text-emerald-800 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800/60"
                 }`}
                 onClick={() => setPagesDropdown(!pagesDropdown)}
               >
-                <span>Pages</span>
+                <span>{t("nav.more")}</span>
                 <LuChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     pagesDropdown ? "rotate-180 text-emerald-800 dark:text-emerald-400" : "text-slate-400"
                   }`}
                 />
               </button>
 
               {pagesDropdown && (
-                <div className="absolute top-full left-0 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 p-2 z-50 animate-fade-in">
+                <div className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-52 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 p-2 z-50 animate-fade-in text-left rtl:text-right">
                   <Link
                     to="/pricing"
-                    className="block px-4 py-2.5 rounded-xl text-sm text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400 font-medium transition-colors"
+                    className="block px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400 transition-colors"
                   >
-                    Pricing & Plans
+                    {t("nav.pricing")}
                   </Link>
                   <Link
                     to="/gallery"
-                    className="block px-4 py-2.5 rounded-xl text-sm text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400 font-medium transition-colors"
+                    className="block px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400 transition-colors"
                   >
-                    Facility & Cases
+                    {t("nav.gallery")}
                   </Link>
                   <Link
                     to="/booking"
-                    className="block px-4 py-2.5 rounded-xl text-sm text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400 font-medium transition-colors"
+                    className="block px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400 transition-colors"
                   >
-                    Book Consultation
+                    {t("nav.booking")}
                   </Link>
                 </div>
               )}
             </div>
 
             <NavLink to="/contact" className={navLinkClass}>
-              Contact
+              {t("nav.contact")}
             </NavLink>
           </nav>
 
           {/* Desktop Right Actions */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2.5">
+            <LanguageSwitcher compact />
             <ThemeToggle compact />
 
             <button
               onClick={() => setSearchOpen(true)}
-              className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center transition-colors cursor-pointer border border-slate-200/80 dark:border-slate-700"
-              aria-label="Search services"
+              className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center transition-colors cursor-pointer border border-slate-200/80 dark:border-slate-700"
+              aria-label={t("common.searchTreatments")}
             >
               <LuSearch className="w-4 h-4" />
             </button>
 
-            <Button to="/booking" variant="primary" size="md" icon={<LuCalendar className="w-4 h-4" />}>
-              Appointment
+            <Button to="/booking" variant="primary" size="sm" icon={<LuCalendar className="w-3.5 h-3.5" />}>
+              {t("common.bookVisit")}
             </Button>
           </div>
 
           {/* Mobile Menu & Search Button */}
           <div className="flex lg:hidden items-center gap-2">
+            <LanguageSwitcher compact />
             <ThemeToggle compact />
 
             <button
               onClick={() => setSearchOpen(true)}
-              className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center cursor-pointer border border-slate-200/80 dark:border-slate-700"
-              aria-label="Search"
+              className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center cursor-pointer border border-slate-200/80 dark:border-slate-700"
+              aria-label={t("common.searchTreatments")}
             >
               <LuSearch className="w-4 h-4" />
             </button>
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center shadow-md cursor-pointer"
-              aria-label="Toggle Navigation Menu"
+              onClick={() => setMobileMenuOpen(true)}
+              className="w-9 h-9 rounded-lg bg-emerald-900 text-white flex items-center justify-center cursor-pointer border border-emerald-700/50"
+              aria-label={t("nav.openMenu")}
             >
-              {mobileMenuOpen ? <LuX className="w-6 h-6" /> : <LuMenu className="w-6 h-6" />}
+              <LuMenu className="w-5 h-5" />
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 top-[60px] bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-2xl px-6 py-6 overflow-y-auto animate-fade-in z-50">
-            <div className="flex flex-col space-y-2">
-              <Link
-                to="/"
-                className="py-2.5 px-4 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400"
-              >
-                Home
-              </Link>
-              <Link
-                to="/about"
-                className="py-2.5 px-4 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400"
-              >
-                About Us
-              </Link>
-              <Link
-                to="/services"
-                className="py-2.5 px-4 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400"
-              >
-                Services & Treatments
-              </Link>
-              <Link
-                to="/gallery"
-                className="py-2.5 px-4 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400"
-              >
-                Before & After Gallery
-              </Link>
-              <Link
-                to="/dentists"
-                className="py-2.5 px-4 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400"
-              >
-                Meet Dr. LABABOU.N
-              </Link>
-              <Link
-                to="/pricing"
-                className="py-2.5 px-4 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400"
-              >
-                Pricing & Plans
-              </Link>
-              <Link
-                to="/contact"
-                className="py-2.5 px-4 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400"
-              >
-                Contact & Location
-              </Link>
+      {/* Fullscreen Mobile Navigation Drawer (Independent from Header Stacking Context) */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-white dark:bg-slate-950 flex flex-col animate-fade-in text-left rtl:text-right">
+          {/* Mobile Drawer Top Bar */}
+          <div className="px-4 py-3 border-b border-slate-200/80 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900 shrink-0">
+            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-emerald-900 dark:bg-emerald-950 text-amber-300 flex items-center justify-center border border-emerald-700/40 shrink-0">
+                <FaTooth className="w-4 h-4" />
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-serif text-lg font-bold tracking-tight text-slate-900 dark:text-white leading-none">
+                    AURA
+                  </span>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 bg-emerald-50/90 dark:bg-emerald-950/70 px-2 py-0.5 rounded-full border border-emerald-200/80 dark:border-emerald-700/40 shadow-xs">
+                    Clinic
+                  </span>
+                </div>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">
+                  {clinic.arabicName}
+                </span>
+              </div>
+            </Link>
 
-              <div className="pt-4 mt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-3">
-                <Button to="/booking" variant="primary" size="lg" className="w-full">
-                  Book Appointment Now
-                </Button>
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher compact />
+              <ThemeToggle compact />
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-9 h-9 rounded-lg bg-emerald-900 text-white flex items-center justify-center cursor-pointer border border-emerald-700/50"
+                aria-label={t("nav.closeMenu")}
+              >
+                <LuX className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Drawer Scrollable Body */}
+          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+            <nav className="flex flex-col space-y-1">
+              <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={mobileNavLinkClass}>
+                <span>{t("nav.home")}</span>
+                <span className="text-xs text-slate-400">01</span>
+              </NavLink>
+              <NavLink to="/about" onClick={() => setMobileMenuOpen(false)} className={mobileNavLinkClass}>
+                <span>{t("nav.about")}</span>
+                <span className="text-xs text-slate-400">02</span>
+              </NavLink>
+              <NavLink to="/services" onClick={() => setMobileMenuOpen(false)} className={mobileNavLinkClass}>
+                <span>{t("nav.services")}</span>
+                <span className="text-xs text-slate-400">03</span>
+              </NavLink>
+              <NavLink to="/gallery" onClick={() => setMobileMenuOpen(false)} className={mobileNavLinkClass}>
+                <span>{t("nav.gallery")}</span>
+                <span className="text-xs text-slate-400">04</span>
+              </NavLink>
+              <NavLink to="/dentists" onClick={() => setMobileMenuOpen(false)} className={mobileNavLinkClass}>
+                <span>{t("nav.dentists")}</span>
+                <span className="text-xs text-slate-400">05</span>
+              </NavLink>
+              <NavLink to="/pricing" onClick={() => setMobileMenuOpen(false)} className={mobileNavLinkClass}>
+                <span>{t("nav.pricing")}</span>
+                <span className="text-xs text-slate-400">06</span>
+              </NavLink>
+              <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)} className={mobileNavLinkClass}>
+                <span>{t("nav.contact")}</span>
+                <span className="text-xs text-slate-400">07</span>
+              </NavLink>
+            </nav>
+
+            {/* Quick Action CTA Box */}
+            <div className="pt-2 space-y-2 border-t border-slate-200/80 dark:border-slate-800">
+              <Button to="/booking" variant="primary" size="md" className="w-full" icon={<LuCalendar className="w-4 h-4" />}>
+                {t("common.bookAppointment")}
+              </Button>
+
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <a
-                  href={`tel:${clinicData.contact.phone.replace(/\./g, "")}`}
-                  className="flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  href={`tel:${clinic.contact.phone.replace(/\./g, "")}`}
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-900"
                 >
-                  <LuPhoneCall className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
-                  <span>Call {clinicData.contact.phoneDisplay}</span>
+                  <LuPhoneCall className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span>{t("common.callReception")}</span>
+                </a>
+                <a
+                  href={`https://wa.me/${clinic.contact.whatsapp.replace("+", "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-emerald-900 text-emerald-200 border border-emerald-700/50 text-xs font-semibold"
+                >
+                  <FaWhatsapp className="w-3.5 h-3.5 text-emerald-300" />
+                  <span>WhatsApp</span>
                 </a>
               </div>
             </div>
+
+            {/* Location & Hours Micro-Footer */}
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 space-y-1">
+              <div className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
+                <LuMapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>{clinic.contact.city}, {clinic.contact.country}</span>
+              </div>
+              <p className="font-light">{clinic.contact.hours.weekdays}</p>
+            </div>
           </div>
-        )}
-      </header>
+        </div>
+      )}
 
       {/* Global Interactive Search Modal */}
-      <Modal isOpen={searchOpen} onClose={() => setSearchOpen(false)} title="Search Treatments & Services">
-        <div className="space-y-4">
+      <Modal isOpen={searchOpen} onClose={() => setSearchOpen(false)} title={t("common.searchTreatments")}>
+        <div className="space-y-3.5 text-left rtl:text-right">
           <div className="relative">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="e.g. Veneers, Implants, Whitening, Root Canal..."
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-5 py-4 pl-12 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-700"
+              placeholder={t("common.searchPlaceholder")}
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pl-10 rtl:pl-4 rtl:pr-10 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-700"
               autoFocus
             />
-            <LuSearch className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <LuSearch className="w-4 h-4 text-slate-400 absolute left-3.5 rtl:left-auto rtl:right-3.5 top-1/2 -translate-y-1/2" />
           </div>
 
           {searchQuery.trim() !== "" && (
-            <div className="space-y-2 mt-4 max-h-64 overflow-y-auto">
+            <div className="space-y-1.5 mt-3 max-h-60 overflow-y-auto">
               {searchResults.length > 0 ? (
                 searchResults.map((service) => (
                   <Link
                     key={service.id}
                     to={`/services#${service.id}`}
                     onClick={() => setSearchOpen(false)}
-                    className="block p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-emerald-200 dark:hover:border-emerald-700 hover:bg-emerald-50/60 dark:hover:bg-slate-800/80 transition-colors"
+                    className="block p-3 rounded-lg border border-slate-100 dark:border-slate-800 hover:border-emerald-300 dark:hover:border-emerald-700 hover:bg-emerald-50/50 dark:hover:bg-slate-800/80 transition-colors"
                   >
-                    <div className="flex items-center justify-between mb-1">
-                      <h4 className="font-semibold text-slate-900 dark:text-white">{service.title}</h4>
-                      <span className="text-xs text-emerald-700 dark:text-emerald-400 font-medium">
-                        {service.startingPrice}
+                    <div className="flex items-center justify-between mb-0.5">
+                      <h4 className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-white">{service.title}</h4>
+                      <span className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold rtl:rotate-180">
+                        →
                       </span>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">{service.shortDescription}</p>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-300 line-clamp-1">{service.shortDescription}</p>
                   </Link>
                 ))
               ) : (
-                <div className="text-center py-6 text-slate-500 dark:text-slate-400 text-sm">
-                  No treatments found matching "{searchQuery}". Call us at {clinicData.contact.phoneDisplay} for immediate assistance.
+                <div className="text-center py-5 text-slate-500 dark:text-slate-400 text-xs">
+                  {t("common.noSearchResults", "", { query: searchQuery, phone: clinic.contact.phoneDisplay })}
                 </div>
               )}
             </div>
           )}
 
-          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
-            <span className="flex items-center gap-1">
-              <LuSparkles className="w-3.5 h-3.5 text-amber-500" />
-              Popular: Implants, E-max Veneers, Laser Whitening
-            </span>
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400">
+            {t("common.suggestedSearch")}
           </div>
         </div>
       </Modal>

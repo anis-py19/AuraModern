@@ -2,30 +2,32 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { LuCalendar } from "react-icons/lu";
 import AppointmentSection from "../Components/sections/AppointmentSection";
+import Badge from "../Components/common/Badge";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Booking() {
+  const { t } = useLanguage();
+
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in text-left rtl:text-right">
       {/* Hero Header */}
-      <div className="bg-slate-950 text-white py-16 sm:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-slate-950 to-slate-950" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-900/60 border border-emerald-500/40 text-amber-300 text-xs font-semibold uppercase tracking-wider">
-            <LuCalendar className="w-3.5 h-3.5 text-amber-400" />
-            <span>Online Clinic Scheduling</span>
-          </div>
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white">
-            Book Your Dental Consultation
+      <div className="bg-slate-950 text-white py-12 sm:py-16 relative overflow-hidden text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-3">
+          <Badge light size="md" icon={<LuCalendar className="w-3.5 h-3.5 text-emerald-400" />}>
+            {t("appointment.badge")}
+          </Badge>
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+            {t("appointment.pageTitle")}
           </h1>
-          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-light">
-            Reserve your consultation slot with Dr. LABABOU.N at Aura Modern Dentistry in Algiers.
+          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+            {t("appointment.subtitle")}
           </p>
-          <div className="flex items-center justify-center gap-2 text-xs text-slate-400 pt-2">
+          <div className="flex items-center justify-center gap-2 text-xs text-slate-400 pt-1">
             <Link to="/" className="hover:text-white transition-colors">
-              Home
+              {t("nav.home")}
             </Link>
             <span>/</span>
-            <span className="text-amber-300">Appointment</span>
+            <span className="text-emerald-400">{t("nav.booking")}</span>
           </div>
         </div>
       </div>

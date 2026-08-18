@@ -68,3 +68,153 @@ export const pricingPlans = [
     ctaText: "Book Implant Consult",
   },
 ];
+
+export function getPricingData(lang = "en") {
+  if (lang === "fr") {
+    return [
+      {
+        id: "preventive",
+        title: "Détartrage & Bilan d'Hygiène",
+        subtitle: "Nettoyage approfondi et prévention bucco-dentaire",
+        price: "X",
+        currency: "DZD",
+        popular: false,
+        badge: "Soin Préventif",
+        features: [
+          "Examen bucco-dentaire numérique complet",
+          "Détartrage supra et sous-gingival aux ultrasons",
+          "Aéropolissage doux pour taches de café et thé",
+          "Bilan parodontal et conseils personnalisés d'hygiène",
+          "Radiographie numérique diagnostique incluse",
+        ],
+        ctaText: "Réserver un Détartrage",
+      },
+      {
+        id: "aesthetic-whitening",
+        title: "Blanchiment Laser & Éclat",
+        subtitle: "Éclaircissement médical rapide en cabinet",
+        price: "X",
+        currency: "DZD",
+        popular: true,
+        badge: "Le Plus Demandé",
+        features: [
+          "Gain jusqu'à 8 teintes en une seule séance",
+          "Technologie laser à lumière froide préservatrice",
+          "Protection gingivale et formule anti-sensibilité",
+          "Détartrage et polissage initial inclus",
+          "Kit d'entretien à domicile offert",
+        ],
+        ctaText: "Obtenir un Sourire Éclatant",
+      },
+      {
+        id: "hollywood-smile",
+        title: "Facettes Porcelaine E-Max",
+        subtitle: "Facettes céramiques artisanales sur mesure",
+        price: "X",
+        currency: "DZD / dent",
+        popular: false,
+        badge: "Soin Esthétique",
+        features: [
+          "Simulation 3D par Digital Smile Design (DSD)",
+          "Céramique ultra-fine haut de gamme Ivoclar E-Max",
+          "Personnalisation de la teinte et translucidité",
+          "Essai esthétique préalable (Mock-up)",
+          "Garantie clinique de 10 ans",
+        ],
+        ctaText: "Concevoir Mon Sourire",
+      },
+      {
+        id: "implant-rehab",
+        title: "Implant Dentaire en Titane",
+        subtitle: "Racine artificielle en titane et couronne céramique",
+        price: "X",
+        currency: "DZD / unité",
+        popular: false,
+        badge: "Solution Permanente",
+        features: [
+          "Titane Grade 4 européen / suisse haute pureté",
+          "Planification osseuse 3D et chirurgie guidée",
+          "Technique micro-chirurgicale indolore",
+          "Pilier personnalisé et couronne en zircone esthétique",
+          "Garantie d'ostéointégration à vie",
+        ],
+        ctaText: "Bilan Implantaire",
+      },
+    ];
+  }
+
+  if (lang === "ar") {
+    return [
+      {
+        id: "preventive",
+        title: "التنظيف وإزالة الجير",
+        subtitle: "صيانة شاملة لصحة الفم وتنظيف عميق للأسنان",
+        price: "X",
+        currency: "دج",
+        popular: false,
+        badge: "عناية وقائية",
+        features: [
+          "فحص فموي سريري ورقمي شامل",
+          "تقليح وإزالة الجير بالموجات فوق الصوتية",
+          "تلميع هوائي لإزالة تصبغات الشاي والقهوة",
+          "تقييم صحة اللثة وإرشادات العناية اليومية",
+          "تصوير تشخيصي رقمي بالأشعة مشمول",
+        ],
+        ctaText: "حجز جلسة تنظيف",
+      },
+      {
+        id: "aesthetic-whitening",
+        title: "تبييض الأسنان بالليزر",
+        subtitle: "تفتيح لون الأسنان السريري بتقنية الضوء البارد",
+        price: "X",
+        currency: "دج",
+        popular: true,
+        badge: "الأكثر طلباً",
+        features: [
+          "تفتيح يصل إلى 8 درجات في جلسة واحدة",
+          "تقنية الليزر بالضوء البارد الحامية للمينا",
+          "حاجز واقٍ ومضاد لحساسية الأسنان واللثة",
+          "تلميع وتنظيف أولي مجاني للأسنان",
+          "مجموعة منزلية مجانية للعناية بالبياض",
+        ],
+        ctaText: "احصل على ابتسامة بيضاء",
+      },
+      {
+        id: "hollywood-smile",
+        title: "عدسات الفينيرز الخزفية E-Max",
+        subtitle: "عدسات سيراميك مخصصة ودقيقة لتجميل الابتسامة",
+        price: "X",
+        currency: "دج / سن",
+        popular: false,
+        badge: "تجميل الابتسامة",
+        features: [
+          "محاكاة وتصميم ثلاثي الأبعاد للابتسامة (DSD)",
+          "سيراميك إيفوكلار E-Max فائق الرقة والمتانة",
+          "تنسيق مخصص للون والشفافية مع ملامح الوجه",
+          "تجربة ابتسامة أولية مؤقتة (Mock-up)",
+          "ضمان سريري لمدة 10 سنوات",
+        ],
+        ctaText: "حجز تصميم الابتسامة",
+      },
+      {
+        id: "implant-rehab",
+        title: "زراعة الأسنان بالتيتانيوم",
+        subtitle: "تعويض دائم لجذر السن مع تاج زيركون تجميلي",
+        price: "X",
+        currency: "دج / وحدة",
+        popular: false,
+        badge: "حل دائم مدى الحياة",
+        features: [
+          "تيتانيوم أوروبي / سويسري نقي فئة 4 الطبية",
+          "تخطيط عظمي ثلاثي الأبعاد وجراحة موجهة بدقة",
+          "تقنية مجهرية لطيفة وبدون ألم",
+          "دعامة مخصصة وتاج زيركون عالي الجمالية",
+          "ضمان التحام عظمي مدى الحياة",
+        ],
+        ctaText: "حجز استشارة زراعة",
+      },
+    ];
+  }
+
+  return pricingPlans;
+}

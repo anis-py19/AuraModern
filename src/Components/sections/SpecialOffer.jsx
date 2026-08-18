@@ -2,51 +2,64 @@ import React from "react";
 import { LuCalendar, LuShieldCheck } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
 import Button from "../common/Button";
-import { clinicData } from "../../data/clinicData";
+import Badge from "../common/Badge";
+import { getClinicData } from "../../data/clinicData";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function SpecialOffer() {
+  const { language, t } = useLanguage();
+  const clinic = getClinicData(language);
+
+  const whatsappMessage = encodeURIComponent(
+    language === "fr"
+      ? "Bonjour Clinique Aura, je souhaite obtenir des informations pour un bilan diagnostique complet."
+      : language === "ar"
+      ? "مرحباً عيادة أورا، أود الاستفسار عن حجز فحص تشخيصي رقمي شامل."
+      : "Hello Aura Clinic, I would like to inquire about a Comprehensive Diagnostic Examination."
+  );
+
   return (
-    <section className="py-14 sm:py-18 bg-emerald-950 text-white relative">
+    <section className="py-12 sm:py-16 bg-emerald-950 text-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-7 sm:p-10 text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-900 text-emerald-300 text-xs font-medium tracking-wide">
-            <span>New Patient Consultation</span>
-          </div>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-6 sm:p-8 text-center max-w-3xl mx-auto space-y-3.5">
+          <Badge light size="md">
+            {t("specialOffer.badge")}
+          </Badge>
 
           <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug">
-            Comprehensive Digital Smile Assessment
+            {t("specialOffer.title")}
           </h2>
 
           <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed font-light">
-            Preview your potential smile transformation with 3D digital intraoral scanning before starting your veneers or implant treatment.
+            {t("specialOffer.subtitle")}
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 text-xs text-slate-300 py-1">
             <div className="flex items-center gap-1.5">
-              <LuShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>Diagnostic Photography</span>
+              <LuShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>{t("specialOffer.points.0")}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <LuShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>Direct Doctor Evaluation</span>
+              <LuShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>{t("specialOffer.points.1")}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <LuShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>Transparent Itemized Quote</span>
+              <LuShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>{t("specialOffer.points.2")}</span>
             </div>
           </div>
 
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-            <Button to="/booking" variant="gold" size="md" icon={<LuCalendar className="w-4 h-4" />}>
-              Book Consultation
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5">
+            <Button to="/booking" variant="primary" size="sm" icon={<LuCalendar className="w-3.5 h-3.5" />}>
+              {t("specialOffer.scheduleBtn")}
             </Button>
             <Button
-              href={`https://wa.me/${clinicData.contact.whatsapp.replace("+", "")}?text=Hello%20Aura%20Clinic,%20I%20would%20like%20to%20inquire%20about%20a%20Smile%20Consultation.`}
+              href={`https://wa.me/${clinic.contact.whatsapp.replace("+", "")}?text=${whatsappMessage}`}
               variant="glass"
-              size="md"
-              icon={<FaWhatsapp className="w-4 h-4 text-emerald-300" />}
+              size="sm"
+              icon={<FaWhatsapp className="w-3.5 h-3.5 text-emerald-300" />}
             >
-              Inquire via WhatsApp
+              {t("specialOffer.inquireWhatsApp")}
             </Button>
           </div>
         </div>

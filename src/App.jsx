@@ -19,8 +19,19 @@ import NotFound from "./Pages/NotFound";
 // Icons & Data
 import { FaWhatsapp } from "react-icons/fa";
 import { clinicData } from "./data/clinicData";
+import { useLanguage } from "./context/LanguageContext";
 
 function App() {
+  const { language, t } = useLanguage();
+
+  const whatsappMessage = encodeURIComponent(
+    language === "fr"
+      ? "Bonjour Clinique Aura Dentisterie Moderne, je souhaite obtenir des informations pour une consultation dentaire."
+      : language === "ar"
+      ? "مرحباً عيادة أورا لطب الأسنان، أود الاستفسار عن حجز موعد استشارة طبية."
+      : "Hello Aura Modern Dentistry, I would like to inquire about a dental appointment."
+  );
+
   return (
     <>
       <ScrollToTop />
@@ -41,22 +52,22 @@ function App() {
             <Route path="/appointment" element={<Booking />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
+k          </Routes>
         </div>
 
         <Footer />
 
-        {/* Floating WhatsApp Button */}
+        {/* Floating WhatsApp Button with RTL support */}
         <a
-          href={`https://wa.me/${clinicData.contact.whatsapp.replace("+", "")}?text=Hello%20Aura%20Modern%20Dentistry,%20I%20would%20like%20to%20inquire%20about%20a%20dental%20appointment.`}
+          href={`https://wa.me/${clinicData.contact.whatsapp.replace("+", "")}?text=${whatsappMessage}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group border-2 border-white/80"
-          aria-label="Direct WhatsApp Chat"
+          className="fixed bottom-6 right-6 rtl:right-auto rtl:left-6 z-50 w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group border-2 border-white/80"
+          aria-label={t("common.chatWhatsApp")}
         >
           <FaWhatsapp className="w-7 h-7" />
-          <span className="absolute right-full mr-3 bg-slate-900 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-slate-800">
-            Chat on WhatsApp
+          <span className="absolute right-full rtl:right-auto rtl:left-full mr-3 rtl:mr-0 rtl:ml-3 bg-slate-900 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-slate-800">
+            {t("common.chatWhatsApp")}
           </span>
         </a>
       </div>
